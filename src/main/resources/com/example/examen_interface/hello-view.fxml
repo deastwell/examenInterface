@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -20,8 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.examen_interface.HelloController">
+<BorderPane prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.examen_interface.HelloController">
    <center>
         <VBox alignment="TOP_CENTER" spacing="10">
             <children>
@@ -59,13 +59,16 @@
                               </Label>
                                       <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                           <children>
-                                              <RadioButton fx:id="rbStandard" text="Standard" textFill="WHITE">
+                                              <RadioButton fx:id="rbStandard" text="Standard" textFill="WHITE" toggleGroup="$rbTarifa">
                                        <VBox.margin>
                                           <Insets top="20.0" />
                                        </VBox.margin>
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="rbTarifa" />
+                                       </toggleGroup>
                                     </RadioButton>
-                                              <RadioButton fx:id="rbOferta" text="Oferta" textFill="WHITE" />
-                                              <RadioButton fx:id="rbLargaDuracion" prefHeight="20.0" prefWidth="152.0" text="Larga duración" textFill="WHITE">
+                                              <RadioButton fx:id="rbOferta" text="Oferta" textFill="WHITE" toggleGroup="$rbTarifa" />
+                                              <RadioButton fx:id="rbLargaDuracion" prefHeight="20.0" prefWidth="152.0" text="Larga duración" textFill="WHITE" toggleGroup="$rbTarifa">
                                        <VBox.margin>
                                           <Insets bottom="20.0" />
                                        </VBox.margin>
@@ -116,7 +119,7 @@
                               </Label>
                            </children>
                         </GridPane>
-                                <Button fx:id="btnAgregar" maxWidth="-Infinity" onAction="#insertarReceta" prefHeight="30.0" prefWidth="120.0" text="Añadir a la tabla" textAlignment="CENTER">
+                                <Button fx:id="btnAgregar" maxWidth="-Infinity" onAction="#add" prefHeight="30.0" prefWidth="120.0" text="Añadir a la tabla" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </VBox.margin>

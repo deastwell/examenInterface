@@ -9,7 +9,6 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class Coche {
 
 
@@ -19,6 +18,19 @@ public class Coche {
     private String tarifa;
     private LocalDate entrada;
     private LocalDate salida;
+    private int coste;
+
+    public Coche() {
+        this.matricula = matricula;
+        this.modelo = modelo;
+        this.cliente = cliente;
+        this.tarifa = tarifa;
+        this.entrada = entrada;
+        this.salida = salida;
+        this.coste = coste;
+    }
+
 
 
 }
+

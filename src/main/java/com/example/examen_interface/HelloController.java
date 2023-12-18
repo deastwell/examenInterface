@@ -1,12 +1,19 @@
 package com.example.examen_interface;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
@@ -30,29 +37,32 @@ public class HelloController implements Initializable {
     @FXML
     private Button btnSalir;
     @FXML
-    private TableColumn colMatricula;
+    private ToggleGroup rbTarifa;
     @FXML
-    private TableColumn colModelo;
+    private TableColumn<Coche, String> colMatricula;
     @FXML
-    private TableColumn colFechaEntrada;
+    private TableColumn<Coche, String> colModelo;
     @FXML
-    private TableColumn colFechaSalida;
+    private TableColumn<Coche, String> colFechaEntrada;
     @FXML
-    private TableColumn colCliente;
+    private TableColumn<Coche, String> colFechaSalida;
     @FXML
-    private TableColumn colTarifa;
+    private TableColumn<Coche, String> colCliente;
     @FXML
-    private TableColumn colCoste;
+    private TableColumn<Coche, String> colTarifa;
+    @FXML
+    private TableColumn<Coche, String> colCoste;
     @FXML
     private Label lblFooter;
     @FXML
     private Label lblHeader;
     @FXML
-    private ComboBox comboModelo;
+    private ComboBox<String> comboModelo;
     @FXML
-    private ComboBox comboCliente;
+    private ComboBox<String> comboCliente;
     @FXML
-    private TableView tabla;
+    private TableView<Coche> tabla;
+    private ObservableList<Coche> entrada = FXCollections.observableArrayList();
 
 
     @FXML
@@ -81,14 +91,78 @@ public class HelloController implements Initializable {
 
 
 
+        colMatricula.setCellValueFactory((fila)->
+                new SimpleStringProperty(fila.getValue().getMatricula())
+        );
+
+        colModelo.setCellValueFactory((fila)->
+                new SimpleStringProperty(fila.getValue().getModelo())
+        );
+
+        colFechaEntrada.setCellValueFactory((fila)->
+                new SimpleStringProperty(
+                        fila.getValue().getEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                )
+        );
+
+
+        colFechaSalida.setCellValueFactory((fila)->
+                new SimpleStringProperty(
+                        fila.getValue().getSalida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                )
+        );
+
+
+
+        colCliente.setCellValueFactory((fila)->
+                new SimpleStringProperty(fila.getValue().getCliente())
+        );
+
+        colTarifa.setCellValueFactory((fila) ->
+                new SimpleStringProperty(fila.getValue().getTarifa())
+        );
+
+        colCoste.setCellValueFactory((fila)->
+                new SimpleStringProperty(fila.getValue().getCoste()+"")
+        );
+
+
+
+        tabla.setItems(entrada);
+
     }
 
-    @Deprecated
+
+
+
+
+    @FXML
     public void add(ActionEvent actionEvent) {
         if (!txtMatricula.getText().isEmpty() && comboModelo.getValue() != null
                 && comboCliente.getValue() != null && dpEntrada.getValue() != null
                 && dpSalida.getValue() != null && !txtCoste.getText().isEmpty()) {
 
+            String matricula = txtMatricula.getText();
+            String modelo = comboModelo.getValue().toString();
+            String cliente = comboCliente.getValue().toString();
+            LocalDate fechaEntrada = dpEntrada.getValue();
+            LocalDate fechaSalida = dpSalida.getValue();
+
+            String tar = "";
+            ToggleGroup toggleGroup = rbTarifa;
+            RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+
+            if (selectedRadioButton != null) {
+                tar = selectedRadioButton.getText();
+            }
+
+            int coste = Integer.parseInt(txtCoste.getText());
+
+
+            Coche nuevoCoche = new Coche(matricula, modelo, cliente, tar, fechaEntrada, fechaSalida, coste);
+            entrada.add(nuevoCoche);
+
+            limpiarCampos();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Campos obligatorios");
@@ -97,6 +171,7 @@ public class HelloController implements Initializable {
             alert.showAndWait();
         }
     }
+
     private void limpiarCampos() {
         txtMatricula.clear();
         comboModelo.getSelectionModel().clearSelection();
